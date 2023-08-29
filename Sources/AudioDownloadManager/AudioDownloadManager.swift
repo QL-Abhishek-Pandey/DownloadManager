@@ -2,7 +2,7 @@
 import Foundation
 import Combine
 
-@available(macOS 10.15, *)
+//@available(macOS 10.15, *)
 public class AudioDownloadManager: ObservableObject {
     private var downloadManager = AudioDownloadTask()
     private var cancellables = Set<AnyCancellable>()
