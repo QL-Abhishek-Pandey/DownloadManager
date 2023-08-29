@@ -8,7 +8,7 @@
 import Foundation
 
 
-enum TaskResult {
+public enum TaskResult {
     case downloaded(URL)
     case progress(Float)
     case failure(String)

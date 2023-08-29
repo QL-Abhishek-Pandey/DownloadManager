@@ -7,7 +7,7 @@ public class AudioDownloadManager: ObservableObject {
     private var downloadManager = AudioDownloadTask()
     private var cancellables = Set<AnyCancellable>()
 
-    @Published var taskResult: TaskResult = .progress(0.0)
+    @Published public var taskResult: TaskResult = .progress(0.0)
 
     public init() {
         downloadManager.downloadAudioCallback = { [weak self] result in
@@ -15,7 +15,7 @@ public class AudioDownloadManager: ObservableObject {
         }
     }
 
-    func downloadAudio(with url: String) {
+    public func downloadAudio(with url: String) {
         downloadManager.downloadAudio(with: url)
     }
 }
