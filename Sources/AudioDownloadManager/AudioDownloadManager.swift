@@ -1,52 +1,42 @@
 import Foundation
 
-public class AudioDownloader: NSObject {
-    var destinationPath = URL(string: "")
-    var totalDownloaded: Float = 0
+public class AudioDownloadManager: NSObject {
+    
+    var session:URLSession?
+    var dataTask:URLSessionDownloadTask?
     typealias progressClosure = ((TaskResult) -> Void)
-    var handleDownloadedProgressPercent: progressClosure!
+    var downloadAudioCallback: progressClosure!
     
-    // MARK: - Properties
-    private var configuration: URLSessionConfiguration
-    private lazy var session: URLSession = {
-        let session = URLSession(configuration: configuration, delegate: self, delegateQueue: .main)
-        
-        return session
-    }()
-    
-    // MARK: - Initialization
-    override init() {
-        self.configuration = URLSessionConfiguration.background(withIdentifier: "backgroundTasks")
-        super.init()
-    }
-    
-    public func download(url: String, progress: ((TaskResult) -> Void)?) {
-        if let url = URL(string: url) {
-            let task = session.downloadTask(with: url)
-            task.resume()
+    public func downloadAudio(with url: String) {
+        if let audioUrl = URL(string: url) {
+            let configuration = URLSessionConfiguration.default
+            let manqueue = OperationQueue.main
+            session = Foundation.URLSession(configuration: configuration, delegate:self, delegateQueue: manqueue)
+            dataTask = session?.downloadTask(with: audioUrl)
+            dataTask?.resume()
         } else {
-            handleDownloadedProgressPercent(.failure("URL is invalid"))
+            downloadAudioCallback(.failure("InValid URL"))
         }
     }
-    
+
 }
 
-extension AudioDownloader: URLSessionDownloadDelegate {
+extension AudioDownloadManager: URLSessionDownloadDelegate {
    public func urlSession(_ session: URLSession,
                     downloadTask: URLSessionDownloadTask,
                     didWriteData bytesWritten: Int64,
                     totalBytesWritten: Int64,
                     totalBytesExpectedToWrite: Int64) {
-        self.totalDownloaded = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
-        if totalDownloaded < 1 && totalDownloaded > 0.0 {
-        handleDownloadedProgressPercent(.progress(totalDownloaded))
+        let progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
+        if progress < 1 && progress > 0.0 {
+        downloadAudioCallback(.progress(progress))
         }
     }
     
  public func urlSession(_ session: URLSession,
                     downloadTask: URLSessionDownloadTask,
                     didFinishDownloadingTo location: URL) {
-        handleDownloadedProgressPercent(.downloaded(location))
+        downloadAudioCallback(.downloaded(location))
       
     }
 }
