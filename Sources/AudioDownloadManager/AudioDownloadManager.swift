@@ -20,7 +20,7 @@ public class AudioDownloader: NSObject {
         super.init()
     }
     
-    func download(url: String, progress: ((TaskResult) -> Void)?) {
+    public func download(url: String, progress: ((TaskResult) -> Void)?) {
         if let url = URL(string: url) {
             let task = session.downloadTask(with: url)
             task.resume()
