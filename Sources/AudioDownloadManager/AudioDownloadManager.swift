@@ -9,7 +9,7 @@ public class AudioDownloadManager: ObservableObject {
 
     @Published var taskResult: TaskResult = .progress(0.0)
 
-    init() {
+    public init() {
         downloadManager.downloadAudioCallback = { [weak self] result in
             self?.taskResult = result
         }
