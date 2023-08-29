@@ -35,9 +35,9 @@ extension AudioDownloadTask: URLSessionDownloadDelegate {
                     totalBytesWritten: Int64,
                     totalBytesExpectedToWrite: Int64) {
         let progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
-        if progress < 1 && progress > 0.0 {
+        //if progress < 1 && progress > 0.0 {
         downloadAudioCallback(.progress(progress))
-        }
+       // }
     }
     
  public func urlSession(_ session: URLSession,
