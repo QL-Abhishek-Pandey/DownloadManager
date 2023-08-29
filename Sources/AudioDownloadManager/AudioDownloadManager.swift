@@ -1,6 +1,6 @@
 import Foundation
 
-class AudioDownloader: NSObject {
+public class AudioDownloader: NSObject {
     var destinationPath = URL(string: "")
     var totalDownloaded: Float = 0
     typealias progressClosure = ((TaskResult) -> Void)
@@ -32,7 +32,7 @@ class AudioDownloader: NSObject {
 }
 
 extension AudioDownloader: URLSessionDownloadDelegate {
-    func urlSession(_ session: URLSession,
+   public func urlSession(_ session: URLSession,
                     downloadTask: URLSessionDownloadTask,
                     didWriteData bytesWritten: Int64,
                     totalBytesWritten: Int64,
@@ -43,7 +43,7 @@ extension AudioDownloader: URLSessionDownloadDelegate {
         }
     }
     
-    func urlSession(_ session: URLSession,
+ public func urlSession(_ session: URLSession,
                     downloadTask: URLSessionDownloadTask,
                     didFinishDownloadingTo location: URL) {
         handleDownloadedProgressPercent(.downloaded(location))
