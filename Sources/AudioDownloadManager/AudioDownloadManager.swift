@@ -2,12 +2,8 @@ import Foundation
 
 class AudioDownloader: NSObject {
     var destinationPath = URL(string: "")
-    var totalDownloaded: Float = 0 {
-        didSet {
-            self.handleDownloadedProgressPercent?(totalDownloaded, destinationPath)
-        }
-    }
-    typealias progressClosure = ((Float, URL?) -> Void)
+    var totalDownloaded: Float = 0
+    typealias progressClosure = ((TaskResult) -> Void)
     var handleDownloadedProgressPercent: progressClosure!
     
     // MARK: - Properties
@@ -24,14 +20,13 @@ class AudioDownloader: NSObject {
         super.init()
     }
     
-    func download(url: String, progress: ((Float, URL?) -> Void)?) {
-        self.handleDownloadedProgressPercent = progress
-        guard let url = URL(string: url) else {
-            preconditionFailure("URL is invalid!")
+    func download(url: String, progress: ((TaskResult) -> Void)?) {
+        if let url = URL(string: url) {
+            let task = session.downloadTask(with: url)
+            task.resume()
+        } else {
+            handleDownloadedProgressPercent(.failure("URL is invalid"))
         }
-        
-        let task = session.downloadTask(with: url)
-        task.resume()
     }
     
 }
@@ -43,12 +38,15 @@ extension AudioDownloader: URLSessionDownloadDelegate {
                     totalBytesWritten: Int64,
                     totalBytesExpectedToWrite: Int64) {
         self.totalDownloaded = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
+        if totalDownloaded < 1 && totalDownloaded > 0.0 {
+        handleDownloadedProgressPercent(.progress(totalDownloaded))
+        }
     }
     
     func urlSession(_ session: URLSession,
                     downloadTask: URLSessionDownloadTask,
                     didFinishDownloadingTo location: URL) {
-        destinationPath = location
+        handleDownloadedProgressPercent(.downloaded(location))
       
     }
 }

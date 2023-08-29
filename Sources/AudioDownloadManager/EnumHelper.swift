@@ -9,7 +9,8 @@ import Foundation
 
 
 enum TaskResult {
-    case download(URL)
+    case downloaded(URL)
     case progress(Float)
-    case failure(Error)
+    case failure(String)
+    //case intial
 }
