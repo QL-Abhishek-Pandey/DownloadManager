@@ -1,10 +1,11 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 //@available(macOS 10.15, *)
 public class AudioDownloadManager: ObservableObject {
-    var player = PlayerManager()
+    //var player = PlayerManager()
     private var downloadManager = AudioDownloadTask()
     private var cancellables = Set<AnyCancellable>()
     
@@ -24,8 +25,8 @@ public class AudioDownloadManager: ObservableObject {
         downloadManager.cancelMedia()
     }
     
-    public func playMedia(with url: String) {
-        player.playMedia(with: url)
+    public func playMedia(with url: String) -> some View {
+      NavigationLink("", destination:  AudioPlayerView(mediaUrl: url))
     }
     
 }

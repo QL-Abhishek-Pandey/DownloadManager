@@ -7,11 +7,44 @@
 
 import SwiftUI
 
-struct SwiftUIView: View {
+struct AudioPlayerView: View {
+    @Environment(\.dismiss) private var dismiss
+    @StateObject var player = PlayerManager()
+    var mediaUrl = ""
     var body: some View {
-        VStack {
-            
+        GeometryReader {_ in
+            VStack {
+                HStack{
+                    Button {
+                        
+                    } label: {
+                        Image("back")
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                        
+                    }
+                    Spacer()
+                }
+                Image("playerImage")
+                    .resizable()
+                    .frame(height: 400)
+                    .cornerRadius(10)
+                    .padding(.horizontal, 20)
+                Button {
+                    
+                } label: {
+                    Image("play")
+                        .resizable()
+                        .frame(width: 50, height: 50)
+                    
+                }.padding(.top, 40)
+                
+            }
         }
+        .onAppear {
+            player.playMedia(with: mediaUrl)
+        }
+        
     }
 }
 
