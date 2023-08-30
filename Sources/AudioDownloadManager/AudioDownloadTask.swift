@@ -45,13 +45,12 @@ extension AudioDownloadTask: URLSessionDownloadDelegate {
     public func urlSession(_ session: URLSession,
                            downloadTask: URLSessionDownloadTask,
                            didFinishDownloadingTo location: URL) {
-        downloadAudioCallback(.downloaded(location))
-        
+        saveAudioPath(with: location)
     }
 }
 
 extension AudioDownloadTask {
-    func saveAduioFile(location: URL) {
+    func saveAudioPath(with location: URL) {
         let DocumentDirectory = URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])
         let destinationUrl = DocumentDirectory.appendingPathComponent(URL(string: audioURl)!.lastPathComponent)
         do {
