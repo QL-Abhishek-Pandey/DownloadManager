@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UserNotifications
 
 public class AudioDownloadTask: NSObject {
     
@@ -74,6 +75,7 @@ extension AudioDownloadTask {
             }
             do {
                 try FileManager.default.moveItem(at: location, to: destinationUrl)
+                triggerLocalNotification()
                 downloadAudioCallback?(.downloaded(destinationUrl))
                 
             } catch let error as NSError {
@@ -86,5 +88,18 @@ extension AudioDownloadTask {
             downloadAudioCallback?(.failure("Unable to create directory \(error.debugDescription)"))
         }
         
+    }
+}
+
+
+extension AudioDownloadTask {
+    func triggerLocalNotification() {
+        let content = UNMutableNotificationContent()
+        content.title = "Download"
+        content.subtitle = "Audio is downloaded"
+        content.sound = UNNotificationSound.default
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request)
     }
 }
