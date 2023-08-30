@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct AudioPlayerView: View {
+public struct AudioPlayerView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var player = PlayerManager()
     var mediaUrl = ""
-    var body: some View {
+    public var body: some View {
         GeometryReader {_ in
             VStack {
                 HStack{
