@@ -25,8 +25,8 @@ public class AudioDownloadManager: ObservableObject {
         downloadManager.cancelMedia()
     }
     
-    public func playMedia(with url: String) -> some View {
-      NavigationLink("", destination:  AudioPlayerView(mediaUrl: url))
+    public func openAudioPlayer(with url: String) -> some View {
+        return AudioPlayerView(mediaUrl: url)
     }
     
 }
