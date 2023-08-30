@@ -18,7 +18,7 @@ public struct AudioPlayerView: View {
             VStack {
                 HStack{
                     Button {
-                        
+                       dismiss()
                     } label: {
                         Image("back")
                             .resizable()
@@ -33,7 +33,11 @@ public struct AudioPlayerView: View {
                     .cornerRadius(10)
                     .padding(.horizontal, 20)
                 Button {
-                    
+                    if player.isPlay {
+                        player.pauseMedia()
+                    } else {
+                        player.resumeMedia()
+                    }
                 } label: {
                     Image(player.isPlay ? "pause": "play")
                         .resizable()
@@ -42,7 +46,7 @@ public struct AudioPlayerView: View {
                 }.padding(.top, 40)
                 
             }
-        }
+        }.navigationBarBackButtonHidden(true)
         .onAppear {
             player.playMedia(with: mediaUrl)
         }
