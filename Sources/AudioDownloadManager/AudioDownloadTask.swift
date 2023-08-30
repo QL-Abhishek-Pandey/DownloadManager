@@ -57,16 +57,17 @@ extension AudioDownloadTask {
             try FileManager.default.createDirectory(atPath: DocumentDirectory.path, withIntermediateDirectories: true, attributes: nil)
             print("Dir Path = \(destinationUrl)")
             if FileManager.default.fileExists(atPath: destinationUrl.path) {
-                downloadAudioCallback(.failure("This file is already exists in this path."))
-            } else {
-                do {
-                    try FileManager.default.moveItem(at: location, to: destinationUrl)
-                    downloadAudioCallback(.downloaded(destinationUrl))
-                    
-                } catch let error as NSError {
-                    print(error.localizedDescription)
-                }
+                try? FileManager.default.removeItem(at: destinationUrl)
+                //downloadAudioCallback(.failure("This file is already exists in this path."))
+            } //else {
+            do {
+                try FileManager.default.moveItem(at: location, to: destinationUrl)
+                downloadAudioCallback(.downloaded(destinationUrl))
+                
+            } catch let error as NSError {
+                print(error.localizedDescription)
             }
+            //}
         }
         catch let error as NSError {
             downloadAudioCallback(.failure("Unable to create directory \(error.debugDescription)"))
