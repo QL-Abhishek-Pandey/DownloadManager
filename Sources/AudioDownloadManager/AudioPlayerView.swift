@@ -33,7 +33,7 @@ struct AudioPlayerView: View {
                 Button {
                     
                 } label: {
-                    Image("play")
+                    Image(player.isPlay ? "pause": "play")
                         .resizable()
                         .frame(width: 50, height: 50)
                     
