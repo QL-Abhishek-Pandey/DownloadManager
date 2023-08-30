@@ -23,6 +23,7 @@ public struct AudioPlayerView: View {
                         Image("back")
                             .resizable()
                             .frame(width: 30, height: 30)
+                            .padding(.leading, 20)
                         
                     }
                     Spacer()
@@ -31,7 +32,7 @@ public struct AudioPlayerView: View {
                     .resizable()
                     .frame(height: 400)
                     .cornerRadius(10)
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, 20).padding(.top, 20)
                 Button {
                     if player.isPlay {
                         player.pauseMedia()
