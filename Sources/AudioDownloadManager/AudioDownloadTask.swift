@@ -9,12 +9,14 @@ import Foundation
 
 public class AudioDownloadTask: NSObject {
     
+    //MARK: - Properties
     var session:URLSession?
     var dataTask:URLSessionDownloadTask?
     var audioURl = ""
-    typealias progressClosure = ((TaskResult) -> Void)
+    typealias progressClosure = ((TaskResult) -> Void)?
     var downloadAudioCallback: progressClosure!
     
+    //MARK: Download Media
     public func downloadAudio(with url: String) {
         audioURl = url
         if let audioUrl = URL(string: audioURl) {
@@ -24,12 +26,19 @@ public class AudioDownloadTask: NSObject {
             dataTask = session?.downloadTask(with: audioUrl)
             dataTask?.resume()
         } else {
-            downloadAudioCallback(.failure("InValid URL"))
+            downloadAudioCallback?(.failure("InValid URL"))
         }
+    }
+    
+    //MARK: Cancel Download Media
+    func cancelMedia() {
+        dataTask?.cancel()
+        downloadAudioCallback?(.cancel)
     }
     
 }
 
+//MARK: - URLSessionDownloadDelegate
 extension AudioDownloadTask: URLSessionDownloadDelegate {
     public func urlSession(_ session: URLSession,
                            downloadTask: URLSessionDownloadTask,
@@ -37,9 +46,7 @@ extension AudioDownloadTask: URLSessionDownloadDelegate {
                            totalBytesWritten: Int64,
                            totalBytesExpectedToWrite: Int64) {
         let progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
-        //if progress < 1 && progress > 0.0 {
-        downloadAudioCallback(.progress(progress))
-        // }
+        downloadAudioCallback?(.progress(progress))
     }
     
     public func urlSession(_ session: URLSession,
@@ -49,28 +56,34 @@ extension AudioDownloadTask: URLSessionDownloadDelegate {
     }
 }
 
+
+//MARK: -  Save AudioFile in DIR
 extension AudioDownloadTask {
     func saveAudioPath(with location: URL) {
         let DocumentDirectory = URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])
-        let destinationUrl = DocumentDirectory.appendingPathComponent(URL(string: audioURl)!.lastPathComponent)
+        
+        guard let audioUrl = URL(string: audioURl) else { return }
+        let destinationUrl = DocumentDirectory.appendingPathComponent(audioUrl.lastPathComponent)
+        
         do {
             try FileManager.default.createDirectory(atPath: DocumentDirectory.path, withIntermediateDirectories: true, attributes: nil)
-            print("Dir Path = \(destinationUrl)")
+            
             if FileManager.default.fileExists(atPath: destinationUrl.path) {
+                // check this url is already exist or not
                 try? FileManager.default.removeItem(at: destinationUrl)
-                //downloadAudioCallback(.failure("This file is already exists in this path."))
-            } //else {
+            }
             do {
                 try FileManager.default.moveItem(at: location, to: destinationUrl)
-                downloadAudioCallback(.downloaded(destinationUrl))
+                downloadAudioCallback?(.downloaded(destinationUrl))
                 
             } catch let error as NSError {
                 print(error.localizedDescription)
             }
-            //}
+            
         }
+        
         catch let error as NSError {
-            downloadAudioCallback(.failure("Unable to create directory \(error.debugDescription)"))
+            downloadAudioCallback?(.failure("Unable to create directory \(error.debugDescription)"))
         }
         
     }
