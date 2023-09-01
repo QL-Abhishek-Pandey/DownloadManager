@@ -15,6 +15,7 @@ struct BackButtonView: View {
             } label: {
                 Image(kBack)
                     .resizable()
+                    .aspectRatio(contentMode: .fit)
                     .frame(width: kTwenty * screenWidthFactor, height: kTwenty * screenWidthFactor)
                     .padding(.leading, 20)
                     .onTapGesture {

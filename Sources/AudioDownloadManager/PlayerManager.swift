@@ -29,7 +29,7 @@ class PlayerManager: ObservableObject {
             let interval = CMTime(seconds: 1.0, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
             player?.addPeriodicTimeObserver(forInterval: interval, queue: .main) { time in
                 let currentTime = self.getTime(with: time)
-                self.currentDuration = "\(durationTime.0) : \(durationTime.1)"
+                self.currentDuration = "\(currentTime.0) : \(currentTime.1)"
             }
             
             player?.play()
