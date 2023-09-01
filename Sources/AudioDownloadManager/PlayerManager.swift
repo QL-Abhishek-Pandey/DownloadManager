@@ -60,11 +60,12 @@ public class PlayerManager: ObservableObject {
     func getMeidaPath(of url : String) -> URL?  {
         let docDir = URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])
         guard let audioUrl = URL(string: url) else { return nil }
-        let destinationUrl = docDir.appendingPathComponent(audioUrl.lastPathComponent)
+       // let destinationUrl = docDir.appendingPathComponent(audioUrl.lastPathComponent)
         do {
             // List the contents of the directory
+            let urlsComponnet = url.components(separatedBy: "/").last ?? ""
             let contents = try FileManager.default.contentsOfDirectory(at: docDir, includingPropertiesForKeys: nil, options: [])
-            if let fileURL = contents.first(where: { $0 == destinationUrl }) {
+            if let fileURL = contents.first(where: { $0.lastPathComponent == urlsComponnet }) {
                 return fileURL
             }
         } catch {
