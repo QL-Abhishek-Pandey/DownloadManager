@@ -7,7 +7,7 @@ import SwiftUI
 public class AudioDownloadManager: ObservableObject {
 
     //MARK: - properties
-    @StateObject var playerManager = PlayerManager()
+    var playerManager = PlayerManager()
     private var downloadManager = AudioDownloadTask()
     private var cancellables = Set<AnyCancellable>()
     @Published public var taskResult: TaskResult = .progress(0.0)
