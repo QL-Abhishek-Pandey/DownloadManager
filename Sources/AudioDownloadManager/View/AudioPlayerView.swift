@@ -10,7 +10,7 @@ import SwiftUI
 public struct AudioPlayerView: View {
     
     //MARK: - Properties
-    @ObservedObject var player = PlayerManager()
+    @StateObject var player = PlayerManager()
     public var mediaUrl = ""
     
     //MARK: - body
