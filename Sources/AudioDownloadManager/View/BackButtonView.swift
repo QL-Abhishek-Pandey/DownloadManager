@@ -21,6 +21,7 @@ struct BackButtonView: View {
                     .padding(.leading, 20)
                     .onTapGesture {
                         dismiss()
+                        player.deinitPlayer()
                     }
                 
             }
