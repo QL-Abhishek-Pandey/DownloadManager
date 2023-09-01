@@ -50,6 +50,7 @@ class PlayerManager: ObservableObject {
     }
     
     func deiniAVPlayer() {
+        player?.replaceCurrentItem(with: nil)
         player = nil
     }
     
