@@ -10,7 +10,7 @@ import SwiftUI
 public struct AudioPlayerView: View {
     
     //MARK: - Properties
-    @StateObject var player = PlayerManager()
+    @ObservedObject var player = PlayerManager()
     public var mediaUrl = ""
     
     //MARK: - body
@@ -18,9 +18,7 @@ public struct AudioPlayerView: View {
         GeometryReader {_ in
             VStack {
                 BackButtonView()
-                    .onTapGesture {
-                        player.deiniAVPlayer()
-                    }
+                
                 Image(kAudioplayerImage)
                     .resizable()
                     .frame(height: kFourHundred * screenWidthFactor)
