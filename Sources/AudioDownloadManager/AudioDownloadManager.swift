@@ -14,7 +14,9 @@ public class AudioDownloadManager: ObservableObject {
     
     public init() {
         downloadManager.downloadAudioCallback = { [self] result in
-            self.taskResult = result
+            DispatchQueue.main.async {
+                self.taskResult = result
+            }
         }
     }
     
