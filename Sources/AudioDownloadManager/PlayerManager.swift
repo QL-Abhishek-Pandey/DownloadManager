@@ -63,9 +63,9 @@ public class PlayerManager: ObservableObject {
        // let destinationUrl = docDir.appendingPathComponent(audioUrl.lastPathComponent)
         do {
             // List the contents of the directory
-            let urlsComponnet = url.components(separatedBy: "/").last ?? ""
+            let urlName = url.components(separatedBy: "/").last ?? ""
             let contents = try FileManager.default.contentsOfDirectory(at: docDir, includingPropertiesForKeys: nil, options: [])
-            if let fileURL = contents.first(where: { $0.lastPathComponent == urlsComponnet }) {
+            if let fileURL = contents.first(where: { $0.lastPathComponent.contains(urlName) }) {
                 return fileURL
             }
         } catch {
