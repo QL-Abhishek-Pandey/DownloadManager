@@ -18,6 +18,9 @@ public struct AudioPlayerView: View {
         GeometryReader {_ in
             VStack {
                 BackButtonView()
+                    .onTapGesture {
+                        player.deiniAVPlayer()
+                    }
                 Image(kAudioplayerImage)
                     .resizable()
                     .frame(height: kFourHundred * screenWidthFactor)

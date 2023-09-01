@@ -49,6 +49,9 @@ class PlayerManager: ObservableObject {
         isPlay = true
     }
     
+    func deiniAVPlayer() {
+        player = nil
+    }
     
     //MARK: - getMeidaPath
     func getMeidaPath(of url : String) -> URL?  {
