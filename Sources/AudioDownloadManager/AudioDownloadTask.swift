@@ -21,8 +21,7 @@ public class AudioDownloadTask: NSObject {
     public func downloadMedia(with url: String) {
         audioURl = url
         if let audioUrl = URL(string: audioURl) {
-            let configuration = URLSessionConfiguration.background(withIdentifier: "Session")
-           // let manqueue = OperationQueue.main
+            let configuration = URLSessionConfiguration.background(withIdentifier: url)
             session = Foundation.URLSession(configuration: configuration, delegate:self, delegateQueue: OperationQueue())
             dataTask = session?.downloadTask(with: audioUrl)
             dataTask?.resume()

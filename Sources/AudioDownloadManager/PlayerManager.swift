@@ -59,7 +59,7 @@ public class PlayerManager: ObservableObject {
     //MARK: - getMeidaPath
     func getMeidaPath(of url : String) -> URL?  {
         let docDir = URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])
-        guard let audioUrl = URL(string: url) else { return nil }
+        //guard let audioUrl = URL(string: url) else { return nil }
        // let destinationUrl = docDir.appendingPathComponent(audioUrl.lastPathComponent)
         do {
             // List the contents of the directory
