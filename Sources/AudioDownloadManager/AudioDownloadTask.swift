@@ -57,6 +57,7 @@ extension AudioDownloadTask: URLSessionDownloadDelegate {
 }
 
 extension AudioDownloadTask {
+    
     //MARK: -  Save AudioFile in DIR
     func saveAudioPath(with location: URL) {
         let DocumentDirectory = URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])
@@ -75,11 +76,9 @@ extension AudioDownloadTask {
                 try FileManager.default.moveItem(at: location, to: destinationUrl)
                 triggerLocalNotification()
                 downloadAudioCallback?(.downloaded(destinationUrl))
-                
             } catch let error as NSError {
                 print(error.localizedDescription)
             }
-            
         }
         
         catch let error as NSError {
@@ -102,11 +101,13 @@ extension AudioDownloadTask {
 
 
 extension AudioDownloadTask {
+    
     //MARK: - triggerLocalNotification
     func triggerLocalNotification() {
         let content = UNMutableNotificationContent()
+        let mediaName = audioURl.components(separatedBy: "/").last ?? "Media"
         content.title = "Download"
-        content.subtitle = "Audio is downloaded"
+        content.subtitle = "\(mediaName) is downloaded"
         content.sound = UNNotificationSound.default
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)

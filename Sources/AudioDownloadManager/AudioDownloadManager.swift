@@ -5,7 +5,7 @@ import SwiftUI
 
 //@available(macOS 10.15, *)
 public class AudioDownloadManager: ObservableObject {
-
+    
     //MARK: - properties
     var playerManager = PlayerManager()
     private var downloadManager = AudioDownloadTask()
@@ -32,6 +32,7 @@ public class AudioDownloadManager: ObservableObject {
     
     // MARK: - openAudioPlayer
     public func openAudioPlayer(with url: String) -> some View {
+        playerManager.deinitPlayer()
         return AudioPlayerView(mediaUrl: url)
     }
     
@@ -55,5 +56,5 @@ public class AudioDownloadManager: ObservableObject {
         downloadManager.removeMedia(with: url)
     }
     
-   
+    
 }
