@@ -10,7 +10,7 @@ import Combine
 import AVKit
 
 var player: AVPlayer?
-class PlayerManager: ObservableObject {
+public class PlayerManager: ObservableObject {
     
     //MARK: - Properties
     @Published var isPlay: Bool = false
@@ -20,7 +20,7 @@ class PlayerManager: ObservableObject {
     
     
     //MARK: - playMedia
-    func playMedia(with url: String) {
+    public func playMedia(with url: String) {
         deinitPlayer()
         if let urlPath = getMeidaPath(of: url) {
             let asset = AVURLAsset(url: urlPath, options: nil)
@@ -40,18 +40,18 @@ class PlayerManager: ObservableObject {
         
     }
     
-    func pauseMedia() {
+   public func pauseMedia() {
         isPlay = false
         player?.pause()
         
     }
     
-    func resumeMedia() {
+   public func resumeMedia() {
         player?.play()
         isPlay = true
     }
     
-    func deinitPlayer() {
+   public func deinitPlayer() {
         player?.replaceCurrentItem(with: nil)
         player = nil
     }
@@ -79,5 +79,23 @@ class PlayerManager: ObservableObject {
         let minutes = Int(totalSeconds) / 60
         let seconds = Int(totalSeconds) % 60
         return(minutes, seconds)
+    }
+    
+    //MARK:  Play Videp
+    public func playVideo(url: String) {
+        if let urlPath = getMeidaPath(of: url) {
+            let videoAsset = AVURLAsset(url: urlPath, options: nil)
+            let videoPlayerItem = AVPlayerItem(asset: videoAsset)
+            let player = AVPlayer(playerItem: videoPlayerItem)
+            let vc = AVPlayerViewController()
+            vc.player = player
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let topViewController = windowScene.windows.first?.rootViewController {
+                topViewController.present(vc, animated: true) {
+                    vc.player?.play()
+                }
+            }
+        }
+        
     }
 }

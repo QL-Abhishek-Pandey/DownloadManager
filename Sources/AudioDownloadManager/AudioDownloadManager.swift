@@ -33,6 +33,10 @@ public class AudioDownloadManager: ObservableObject {
         return AudioPlayerView(mediaUrl: url)
     }
     
+    public func openVideoPlayer(with url: String) {
+        playerManager.playVideo(url: url)
+    }
+    
     //MARK: - isMediaExistInDir
     // check media is already download or not
     public func isMediaExistInDir(with url : String) -> Bool {
@@ -43,8 +47,10 @@ public class AudioDownloadManager: ObservableObject {
         }
     }
     
+    //MARK: - removeMediaFromDir
     public func removeMediaFromDir(with url: String) {
-        
+        downloadManager.removeMedia(with: url)
     }
     
+   
 }
