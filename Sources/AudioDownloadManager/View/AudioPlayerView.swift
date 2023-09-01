@@ -17,7 +17,7 @@ public struct AudioPlayerView: View {
     public var body: some View {
         GeometryReader {_ in
             VStack {
-                BackButtonView()
+                BackButtonView(player: player)
                 
                 Image(kAudioplayerImage)
                     .resizable()

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct BackButtonView: View {
     @Environment(\.dismiss) public var dismiss
+    @ObservedObject var player: PlayerManager
     var body: some View   {
         HStack{
             Button {
