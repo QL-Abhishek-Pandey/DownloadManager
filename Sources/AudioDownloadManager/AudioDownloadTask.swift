@@ -18,7 +18,7 @@ public class AudioDownloadTask: NSObject {
     var downloadAudioCallback: progressClosure!
     
     //MARK: Download Media
-    public func downloadAudio(with url: String) {
+    public func downloadMedia(with url: String) {
         audioURl = url
         if let audioUrl = URL(string: audioURl) {
             let configuration = URLSessionConfiguration.default
@@ -57,9 +57,8 @@ extension AudioDownloadTask: URLSessionDownloadDelegate {
     }
 }
 
-
-//MARK: -  Save AudioFile in DIR
 extension AudioDownloadTask {
+    //MARK: -  Save AudioFile in DIR
     func saveAudioPath(with location: URL) {
         let DocumentDirectory = URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])
         
@@ -69,7 +68,7 @@ extension AudioDownloadTask {
         do {
             try FileManager.default.createDirectory(atPath: DocumentDirectory.path, withIntermediateDirectories: true, attributes: nil)
             
-            if FileManager.default.fileExists(atPath: destinationUrl.path) {
+            if FileManager.default.fileExists(atPath: destinationUrl.path){
                 // check this url is already exist or not
                 try? FileManager.default.removeItem(at: destinationUrl)
             }
@@ -89,10 +88,22 @@ extension AudioDownloadTask {
         }
         
     }
+    
+    //MARK: - Remove Media
+    func removeMedia(with url: String) {
+        let docDir = URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])
+        guard let audioUrl = URL(string: url) else { return }
+        let destinationUrl = docDir.appendingPathComponent(audioUrl.lastPathComponent)
+        if FileManager.default.fileExists(atPath: destinationUrl.path) {
+            try? FileManager.default.removeItem(at: destinationUrl)
+            downloadAudioCallback?(.deleted(audioUrl))
+        }
+    }
 }
 
 
 extension AudioDownloadTask {
+    //MARK: - triggerLocalNotification
     func triggerLocalNotification() {
         let content = UNMutableNotificationContent()
         content.title = "Download"

@@ -14,6 +14,8 @@ class PlayerManager: ObservableObject {
     //MARK: - Properties
     @Published var isPlay: Bool = false
     @Published var player: AVPlayer?
+    @Published var totalDuration: String = "00:00"
+    @Published var currentDuration: String = "00:00"
     
     
     //MARK: - playMedia
@@ -22,6 +24,14 @@ class PlayerManager: ObservableObject {
             let asset = AVURLAsset(url: urlPath, options: nil)
             let playerItem = AVPlayerItem(asset: asset)
             player = AVPlayer.init(playerItem: playerItem)
+            let durationTime = getTime(with: asset.duration)
+            totalDuration = "\(durationTime.0) : \(durationTime.1)"
+            let interval = CMTime(seconds: 1.0, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+            player?.addPeriodicTimeObserver(forInterval: interval, queue: .main) { time in
+                let currentTime = self.getTime(with: time)
+                self.currentDuration = "\(durationTime.0) : \(durationTime.1)"
+            }
+            
             player?.play()
             isPlay = true
         }
@@ -41,7 +51,7 @@ class PlayerManager: ObservableObject {
     
     
     //MARK: - getMeidaPath
-    private func getMeidaPath(of url : String) -> URL?  {
+    func getMeidaPath(of url : String) -> URL?  {
         let docDir = URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])
         guard let audioUrl = URL(string: url) else { return nil }
         let destinationUrl = docDir.appendingPathComponent(audioUrl.lastPathComponent)
@@ -55,5 +65,13 @@ class PlayerManager: ObservableObject {
             print("Error reading directory: \(error)")
         }
         return nil
+    }
+    
+    //MARK: getTime
+    func getTime(with time: CMTime) -> (Int, Int) {
+        let totalSeconds = CMTimeGetSeconds(time)
+        let minutes = Int(totalSeconds) / 60
+        let seconds = Int(totalSeconds) % 60
+        return(minutes, seconds)
     }
 }

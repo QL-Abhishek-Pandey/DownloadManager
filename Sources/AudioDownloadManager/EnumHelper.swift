@@ -13,5 +13,6 @@ public enum TaskResult {
     case progress(Float)
     case failure(String)
     case cancel
+    case deleted(URL)
 
 }
