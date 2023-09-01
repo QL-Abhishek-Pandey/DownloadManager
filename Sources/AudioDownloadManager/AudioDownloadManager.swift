@@ -36,6 +36,7 @@ public class AudioDownloadManager: ObservableObject {
     }
     
     public func openVideoPlayer(with url: String) {
+        playerManager.deinitPlayer()
         playerManager.playVideo(url: url)
     }
     
