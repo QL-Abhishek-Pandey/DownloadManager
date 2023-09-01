@@ -20,6 +20,7 @@ class PlayerManager: ObservableObject {
     
     //MARK: - playMedia
     func playMedia(with url: String) {
+        deinitPlayer()
         if let urlPath = getMeidaPath(of: url) {
             let asset = AVURLAsset(url: urlPath, options: nil)
             let playerItem = AVPlayerItem(asset: asset)
@@ -49,7 +50,7 @@ class PlayerManager: ObservableObject {
         isPlay = true
     }
     
-    func deiniAVPlayer() {
+    func deinitPlayer() {
         player?.replaceCurrentItem(with: nil)
         player = nil
     }
