@@ -13,14 +13,13 @@ public class DownloadTask: NSObject {
     //MARK: - Properties
     var session:URLSession?
     var dataTask:URLSessionDownloadTask?
-    var audioURl = ""
-    typealias progressClosure = ((TaskResult) -> Void)?
-    var downloadAudioCallback: progressClosure!
+    var mediaURL = ""
+    var downloadAudioCallback: ((TaskResult) -> Void)?
     
     //MARK: Download Media
     public func downloadMedia(with url: String) {
-        audioURl = url
-        if let audioUrl = URL(string: audioURl) {
+        mediaURL = url
+        if let audioUrl = URL(string: mediaURL) {
             let configuration = URLSessionConfiguration.background(withIdentifier: url)
             session = Foundation.URLSession(configuration: configuration, delegate:self, delegateQueue: OperationQueue())
             dataTask = session?.downloadTask(with: audioUrl)
@@ -58,11 +57,11 @@ extension DownloadTask: URLSessionDownloadDelegate {
 
 extension DownloadTask {
     
-    //MARK: -  Save AudioFile in DIR
+    //MARK: -  Save Media File in DIR
     func saveAudioPath(with location: URL) {
         let DocumentDirectory = URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])
         
-        guard let audioUrl = URL(string: audioURl) else { return }
+        guard let audioUrl = URL(string: mediaURL) else { return }
         let destinationUrl = DocumentDirectory.appendingPathComponent(audioUrl.lastPathComponent)
         
         do {
@@ -105,7 +104,7 @@ extension DownloadTask {
     //MARK: - triggerLocalNotification
     func triggerLocalNotification() {
         let content = UNMutableNotificationContent()
-        let mediaName = audioURl.components(separatedBy: "/").last ?? "Media"
+        let mediaName = mediaURL.components(separatedBy: "/").last ?? "Media"
         content.title = "Download"
         content.subtitle = "\(mediaName) is downloaded"
         content.sound = UNNotificationSound.default

@@ -4,7 +4,7 @@ import Combine
 import SwiftUI
 
 //@available(macOS 10.15, *)
-public class DownloadManger: ObservableObject {
+public class DownloadManager: ObservableObject {
     
     //MARK: - properties
     var playerManager = PlayerManager()
