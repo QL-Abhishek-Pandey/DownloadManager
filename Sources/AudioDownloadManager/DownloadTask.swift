@@ -8,7 +8,7 @@
 import Foundation
 import UserNotifications
 
-public class AudioDownloadTask: NSObject {
+public class DownloadTask: NSObject {
     
     //MARK: - Properties
     var session:URLSession?
@@ -39,7 +39,7 @@ public class AudioDownloadTask: NSObject {
 }
 
 //MARK: - URLSessionDownloadDelegate
-extension AudioDownloadTask: URLSessionDownloadDelegate {
+extension DownloadTask: URLSessionDownloadDelegate {
     public func urlSession(_ session: URLSession,
                            downloadTask: URLSessionDownloadTask,
                            didWriteData bytesWritten: Int64,
@@ -56,7 +56,7 @@ extension AudioDownloadTask: URLSessionDownloadDelegate {
     }
 }
 
-extension AudioDownloadTask {
+extension DownloadTask {
     
     //MARK: -  Save AudioFile in DIR
     func saveAudioPath(with location: URL) {
@@ -100,7 +100,7 @@ extension AudioDownloadTask {
 }
 
 
-extension AudioDownloadTask {
+extension DownloadTask {
     
     //MARK: - triggerLocalNotification
     func triggerLocalNotification() {

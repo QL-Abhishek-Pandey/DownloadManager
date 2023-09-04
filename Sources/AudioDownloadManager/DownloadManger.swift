@@ -4,12 +4,11 @@ import Combine
 import SwiftUI
 
 //@available(macOS 10.15, *)
-public class AudioDownloadManager: ObservableObject {
+public class DownloadManger: ObservableObject {
     
     //MARK: - properties
     var playerManager = PlayerManager()
-    private var downloadManager = AudioDownloadTask()
-    private var cancellables = Set<AnyCancellable>()
+    private var downloadManager = DownloadTask()
     @Published public var taskResult: TaskResult = .progress(0.0)
     
     public init() {
